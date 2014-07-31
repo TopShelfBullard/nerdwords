@@ -7,27 +7,32 @@ class Sort < ActiveRecord::Base
   def self.get_inclusive_sort_records(inclusion)
     letters = inclusion.split('')
     sort = letters.sort.join
-
     sorts = self.get_inclusive_sorts(sort)
-    sort_records = Array.new
-
+    sort_records = []
+    
     sorts.each do |s|
       length = Length.find_by(number: s.length)
       first_letter = FirstLetter.find_by(letter: s[0])
       last_letter = LastLetter.find_by(letter: s[s.length - 1])
 
-      if sort_record = Sort.find_by(length_id: length.id, first_letter_id: first_letter.id, last_letter_id: last_letter.id)
+      if length and first_letter and last_letter and Sort.where(length_id: length.id, first_letter_id: first_letter.id, last_letter_id: last_letter.id, inclusion: s)
+        sort_record = Sort.where(length_id: length.id, first_letter_id: first_letter.id, last_letter_id: last_letter.id, inclusion: s)
         sort_records << sort_record
-        puts sort_record.inclusion
       end
     end
 
-    puts sort_records
+    if sort_records
+      sort_records.each do |s|
+        puts s.inclusion
+      end
+    end
+
+    sort_records
   end
 
   def self.get_inclusive_sorts(inclusion)
     sorted_letters = inclusion.split('')
-    sorts = Array.new
+    sorts = []
     self.build_inclusive_sort_group(sorts, sorted_letters)
   end
 
