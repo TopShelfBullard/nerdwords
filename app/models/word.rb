@@ -7,22 +7,20 @@ class Word < ActiveRecord::Base
   def self.get_words_from_inclusive_sort(sort)
     sort_records = Sort.get_inclusive_sort_records(sort)
     words = []
-
+    word_records = []
+    
     sort_records.each do |s|
-      word_records = []
-      if self.where(sort_id: s)
-        word_records << self.where(sort_id: s.id)
-        word_records.each do |w|
-          words << w.text
-        end  
-      end
-      puts s
+      word_records << self.where(sort_id: s)
     end
     
-    if words
-      words.each do |w|
-        puts w
+    word_records.each do |w|
+      if not(w.empty?)
+        words << w.text
       end
+    end 
+
+    words.each do |w|
+      puts w
     end
 
     words

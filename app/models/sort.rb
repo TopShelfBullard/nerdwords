@@ -15,32 +15,26 @@ class Sort < ActiveRecord::Base
       first_letter = FirstLetter.find_by(letter: s[0])
       last_letter = LastLetter.find_by(letter: s[s.length - 1])
 
-      sort_record = Sort.where(length_id: length.id,
-                                           first_letter_id: first_letter.id,
-                                           last_letter_id: last_letter.id,
-                                           inclusion: s)
+      sort_record = Sort.where(length_id: length.id, first_letter_id: first_letter.id, last_letter_id: last_letter.id, inclusion: s)
+      
       if not(sort_record.empty?)
         sort_records << sort_record
       end
-    end
 
-    # if sort_records
-    #   sort_records.each do |s|
-    #     puts Sort.find(s).inclusion
-    #   end
-    # end
+    end
+    
     sort_records
   end
 
   def self.get_inclusive_sorts(inclusion)
     sorted_letters = inclusion.split('')
     sorts = []
-    self.build_inclusive_sort_group(sorts, sorted_letters)
+    self.build_inclusive_sort(sorts, sorted_letters)
   end
 
-  def self.build_inclusive_sort_group(sorts, letters)
+  def self.build_inclusive_sort(sorts, letters)
     while letters.length > 0
-      inner_letters = letters 
+      inner_letters = letters.dup
       
       while inner_letters.length > 0
         sorts << inner_letters.join
@@ -52,14 +46,6 @@ class Sort < ActiveRecord::Base
     end
 
     return sorts
-  end
-
-  def self.build_sorts_from_letters(sorts, letters)
-    while letters.length > 0
-      sorts << letters.join
-      letters.pop
-    end
-    return sorts 
   end
 
 end
