@@ -10,12 +10,13 @@ class Word < ActiveRecord::Base
 
     sort_records.each do |s|
       word_records = []
-      if s.id and self.where(sort_id: s.id)
-        word_records = self.where(sort_id: s.id)
+      if self.where(sort_id: s)
+        word_records << self.where(sort_id: s.id)
         word_records.each do |w|
           words << w.text
         end  
       end
+      puts s
     end
     
     if words
