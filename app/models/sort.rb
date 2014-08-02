@@ -5,34 +5,28 @@ class Sort < ActiveRecord::Base
   belongs_to :length
   
   def self.get_inclusive_sort_records(inclusion)
-    letters = inclusion.split('')
-    sort = letters.sort.join
-    sorts = self.get_inclusive_sorts(sort)
     sort_records = []
+    sorts = self.build_inclusive_sorts(inclusion.split('').sort)
     
     sorts.each do |s|
-      length = Length.find_by(number: s.length)
-      first_letter = FirstLetter.find_by(letter: s[0])
-      last_letter = LastLetter.find_by(letter: s[s.length - 1])
-
-      sort_record = Sort.where(length_id: length.id, first_letter_id: first_letter.id, last_letter_id: last_letter.id, inclusion: s)
-      
-      if not(sort_record.empty?)
-        sort_records << sort_record
-      end
-
+      sort_record = self.get_sort_record(s)
+      sort_records << sort_record unless sort_record.nil?
     end
     
     sort_records
   end
 
-  def self.get_inclusive_sorts(inclusion)
-    sorted_letters = inclusion.split('')
-    sorts = []
-    self.build_inclusive_sort(sorts, sorted_letters)
+  def self.get_sort_record(sort)
+      length = Length.find_by(number: sort.length).id
+      first_letter = FirstLetter.find_by(letter: sort[0]).id
+      last_letter = LastLetter.find_by(letter: sort[sort.length - 1]).id
+
+      sort_record = Sort.find_by(length_id: length, first_letter_id: first_letter , last_letter_id: last_letter, inclusion: sort)
   end
 
-  def self.build_inclusive_sort(sorts, letters)
+  def self.build_inclusive_sorts(letters)
+    sorts = []
+
     while letters.length > 0
       inner_letters = letters.dup
       
@@ -45,7 +39,7 @@ class Sort < ActiveRecord::Base
       letters
     end
 
-    return sorts
+    sorts
   end
 
 end
