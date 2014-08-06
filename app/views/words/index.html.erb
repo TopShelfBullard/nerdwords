@@ -1,0 +1,8 @@
+<%= render partial: "words/search" %>
+<h1>Words</h1>
+
+<p>
+    <% @words.each do |w| %>
+      <%= w %>
+    <% end %>
+</p>
