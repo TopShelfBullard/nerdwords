@@ -11,43 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723000337) do
+ActiveRecord::Schema.define(version: 20140810182421) do
 
-  create_table "first_letters", force: true do |t|
-    t.string   "letter"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "last_letters", force: true do |t|
-    t.string   "letter"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "lengths", force: true do |t|
-    t.integer  "number"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "sorts", force: true do |t|
-    t.string   "inclusion"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "first_letter_id"
-    t.integer  "last_letter_id"
-    t.integer  "length_id"
-  end
-
-  create_table "words", force: true do |t|
-    t.string   "text"
+  create_table "deleted_words", force: true do |t|
+    t.string   "deleted_word"
+    t.text     "reason"
     t.integer  "sort_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "first_letter_id"
-    t.integer  "last_letter_id"
-    t.integer  "length_id"
   end
+
+  add_index "deleted_words", ["deleted_word"], name: "index_deleted_words_on_deleted_word"
+  add_index "deleted_words", ["reason"], name: "index_deleted_words_on_reason"
+  add_index "deleted_words", ["sort_id"], name: "index_deleted_words_on_sort_id"
+
+  create_table "sorts", force: true do |t|
+    t.string   "sort"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sorts", ["sort"], name: "index_sorts_on_sort"
+
+  create_table "words", force: true do |t|
+    t.string   "word"
+    t.integer  "sort_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "words", ["sort_id"], name: "index_words_on_sort_id"
+  add_index "words", ["word"], name: "index_words_on_word"
 
 end

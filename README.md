@@ -1,28 +1,7 @@
-== README
+Nerdwords  
+=
+---  
+Nerdwords is a fun attempt for me to learn rails and a chance to redeem myself from my final project for programming fundamentals a couple years ago (if you want a good laugh, here's my blog post from way back then about the final project incident: <a href="http://bullardamitchell.wordpress.com/2013/05/13/h1a-quest-to-discover-things-ive-already-been-given-h1/">A quest to Discover Things I've Already Been Given</a>). This app requires styling, which it will get shortly, and there are a couple defects that have to be addressed. Eventually, I hope that Nerdwords will do a bit more, but for now it just takes in a group of letters from the user and outputs any English word that any combination of those letters can make.  
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+And please don't blame the developer if you loose to your friends at Scrabble because they are running Nerdwords. I assume no responsibility for user dishonesty.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.

@@ -1,30 +1,18 @@
 class Word < ActiveRecord::Base
   belongs_to :sort
-  belongs_to :first_letter
-  belongs_to :last_letter
-  belongs_to :length
+  class << self
 
-  def self.get_words_from_inclusive_sort(sort)
-    sort_records = Sort.get_inclusive_sort_records(sort)
-    words = []
-    
-    sort_records.each do |s|
-      word_records = self.get_words_from_sort_record(s)
-      word_records.each do |w|
-        words << w
+    def get_words_from_inclusive_sort(scrambled_word_query)
+      sort_records = Sort.get_inclusive_sorts(scrambled_word_query)
+      word_records = []
+      
+      sort_records.each do |s|
+        records = s.words
+        word_records = word_records + records
       end
-    end
-    words
-  end
- 
-  def self.get_words_from_sort_record(sort_record)
-    words = []
-
-    Sort.find(sort_record).words.each do |word_record|
-      words << Word.find(word_record)
+      
+      word_records
     end
 
-    words
   end
-
 end
