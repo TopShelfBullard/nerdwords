@@ -1,6 +1,6 @@
 class WordsController < ApplicationController
   def index
-    @words = params[:query] ? Word.get_words_from_inclusive_sort(params[:query]) :  Word.first(50)
+    @words = params[:query] ? Word.get_words_from_inclusive_sort(params[:query], []).sort :  Word.first(50)
   end
 
   def show

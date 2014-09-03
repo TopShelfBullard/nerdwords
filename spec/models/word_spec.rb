@@ -13,7 +13,7 @@ RSpec.describe Word, :type => :model do
         expected_word_records << Word.create(word:word, sort_id:sort_record.id)
       end
 
-      word_records = Word.get_words_from_inclusive_sort('bisath')
+      word_records = Word.get_words_from_inclusive_sort('bisath', [])
       expect(word_records.sort).to eq(expected_word_records.sort)
     end
 
