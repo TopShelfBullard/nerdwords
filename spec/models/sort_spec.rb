@@ -27,6 +27,16 @@ RSpec.describe Sort, :type => :model do
     expect(actual_strings).to eq(expected_strings)
   end
 
+  it "adds letter to string even on the first go-round" do
+    actual_strings = Sort.add_letter_to_each_string('a', ['a', 'b', 'c', 'd'])
+    expect(actual_strings).to eq(['ab', 'ac', 'ad'])
+  end
+
+  it "adds letter to string even with duplicate letters" do
+    actual_strings = Sort.add_letter_to_each_string('ac', ['a', 'b', 'b', 'c', 'c', 'd'])
+    expect(actual_strings).to eq(['acc', 'acd'])
+  end
+
   it "validation returns a hash" do
     validated_user_input = Sort.validate_user_input('abcd1%$spodi')
     expected_validated_user_input = {valid_user_input:['a', 'b', 'c', 'd', 's', 'p', 'o', 'd', 'i'], invalid_user_input:['1', '%', '$']}
