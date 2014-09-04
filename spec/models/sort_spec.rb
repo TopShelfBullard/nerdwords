@@ -27,23 +27,9 @@ RSpec.describe Sort, :type => :model do
     expect(actual_strings).to eq(expected_strings)
   end
 
-  it "validation returns a down-cased copy of the user input if the user input is a string of letters only" do
-    validated_user_input = Sort.validate_user_input('abcdEFGhiJkL')
-    expected_validated_user_input = 'abcdefghijkl'
-
-    expect(validated_user_input).to eq(expected_validated_user_input)
-  end
-
-  it "validation returns nil if user input contains special characters" do
-    validated_user_input = Sort.validate_user_input('abcdEF$GhiJkL')
-    expected_validated_user_input = nil
-
-    expect(validated_user_input).to eq(expected_validated_user_input)
-  end
-
-  it "validation returns nil if user input contains special characters" do
-    validated_user_input = Sort.validate_user_input('abcd1kdospodi')
-    expected_validated_user_input = nil
+  it "validation returns a hash" do
+    validated_user_input = Sort.validate_user_input('abcd1%$spodi')
+    expected_validated_user_input = {valid_user_input:['a', 'b', 'c', 'd', 's', 'p', 'o', 'd', 'i'], invalid_user_input:['1', '%', '$']}
 
     expect(validated_user_input).to eq(expected_validated_user_input)
   end
@@ -59,10 +45,15 @@ RSpec.describe Sort, :type => :model do
     expect(sorts).to eq(expected_sorts)
   end
 
-  it "get inclusive sorts as nil when user input is not valid" do
-    sorts = Sort.get_inclusive_sorts('ab1cd')
+  it "get inclusive sorts works the same with semi-valid user input" do
+    the = Sort.create(sort: "eht")
+    dude = Sort.create(sort: "ddeu")
+    abides = Sort.create(sort: "abdeis")
 
-    expect(sorts).to eq(nil)
+    sorts_from_bad_input = Sort.get_inclusive_sorts('!@#$T%^&*h()_+e=-{}D[]\\|u;:\'\"d<>,.e?/~`A1234b5678i90des')
+    sorts_from_good_input = Sort.get_inclusive_sorts('TheDudeAbides')
+
+    expect(sorts_from_bad_input).to eq(sorts_from_good_input)
   end
 
   it "can adjust the letters used for iterating" do

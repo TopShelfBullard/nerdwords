@@ -5,10 +5,9 @@ class Sort < ActiveRecord::Base
   class << self
 
     def get_inclusive_sorts(user_input)
-      valid_user_input = self.validate_user_input(user_input.chomp.downcase)     
-      return nil if valid_user_input == nil
+      user_input = self.validate_user_input(user_input.chomp.downcase)     
 
-      current_strings = valid_user_input.split('').sort
+      current_strings = user_input[:valid_user_input].sort
       letters = current_strings.dup
       records = current_strings.map{|sort| self.find_by(sort:sort)} - [nil]
       
@@ -20,11 +19,10 @@ class Sort < ActiveRecord::Base
       records.flatten
     end
 
-    def validate_user_input(user_input)
-      user_input = user_input.chomp.downcase
-      is_user_input_valid = user_input[/[a-z]+/] == user_input
-      
-      validated_input =  is_user_input_valid ? user_input : nil
+    def validate_user_input(user_input, valid_user_input_characters = [], invalid_user_input_characters = [])
+      user_input_characters = user_input.chomp.downcase.split('')
+      { valid_user_input:user_input_characters.select{|character| character[/[a-z]+/]}, 
+        invalid_user_input:user_input_characters - user_input_characters.select{|character| character[/[a-z]+/]} }
     end
 
     def add_each_letter_to_each_string(strings, letters,  new_strings = [])
