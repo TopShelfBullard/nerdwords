@@ -27,8 +27,7 @@ class Sort < ActiveRecord::Base
 
     def add_each_letter_to_each_string(strings, letters,  new_strings = [])
       new_strings = strings.map{|string| self.adjust_letters(letters.dup, string.dup.split('')).map{|letter| "#{string}#{letter}"}}
-      new_strings.flatten!.uniq!
-      new_strings
+      new_strings.flatten!.uniq
     end
 
     def adjust_letters(letters, string_letters)
